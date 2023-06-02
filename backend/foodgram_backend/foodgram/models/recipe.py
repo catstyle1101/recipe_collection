@@ -21,7 +21,7 @@ class Recipe(models.Model):
     ingredients = models.ManyToManyField(
         "Ingredient",
         through=IngredientRecipe,
-
+        related_name='ingredients'
     )
     author = models.ForeignKey(
         User,

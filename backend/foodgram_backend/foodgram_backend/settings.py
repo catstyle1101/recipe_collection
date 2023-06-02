@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "djoser",
+    "django_filters",
     "users",
     "foodgram",
     "api",
@@ -140,8 +141,6 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.TokenAuthentication",
     ],
-    # "DEFAULT_PAGINATION_CLASS": "api.pagination.LimitOffsetCustomPagination",
-    # "PAGE_SIZE": 10,
 }
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
@@ -165,5 +164,9 @@ MAX_PASSWORD_LENGTH = 150
 MAX_TAG_NAME_LENGTH = 200
 MAX_INGREDIENT_NAME_LENGTH = 200
 MAX_INGREDIENT_UNIT_NAME_LENGTH = 200
+
+PAGINATION_COUNT = 10
+PAGINATION_MAX_COUNT = 100
+PAGINATION_QUERY_SIZE_PARAM = 'page_size'
 
 AUTH_USER_MODEL = "users.User"
