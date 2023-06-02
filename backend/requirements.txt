@@ -4,3 +4,5 @@ djoser==2.2.0
 pillow==9.5.0
 python-dotenv==1.0.0
 django-filter==23.2
+django-extra-fields==3.0.2
+psycopg2==2.9.6

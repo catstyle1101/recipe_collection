@@ -1,3 +1,4 @@
+from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers
 
 from foodgram.models import Recipe
@@ -12,6 +13,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         many=True,
         read_only=True,
     )
+    image = Base64ImageField()
 
     class Meta:
         model = Recipe
@@ -27,3 +29,6 @@ class RecipeSerializer(serializers.ModelSerializer):
             "text",
             "cooking_time",
         )
+
+    def create(self, validated_data):
+        return Recipe.objects.create(**validated_data)
