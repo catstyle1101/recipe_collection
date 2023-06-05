@@ -17,9 +17,10 @@ class Ingredient(models.Model):
     class Meta:
         verbose_name = "Ингредиент"
         verbose_name_plural = "Ингредиенты"
+        ordering = ("name", )
 
     def __str__(self):
-        return f"{self.name}: {self.measurement_unit}."
+        return f"{self.name}: {self.measurement_unit}"
 
 
 class IngredientRecipe(models.Model):

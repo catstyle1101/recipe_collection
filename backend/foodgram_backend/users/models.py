@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db.models import UniqueConstraint, CheckConstraint, Q
 
 
 class User(AbstractUser):
@@ -35,3 +36,26 @@ class User(AbstractUser):
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ("username", "first_name", "last_name")
+
+
+class Subscription(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="followers"
+    )
+    author = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="subscribers"
+    )
+
+    class Meta:
+        verbose_name = "Подписка"
+        verbose_name_plural = "Подписки"
+        constraints = (
+            UniqueConstraint(
+                fields=("user", "author"),
+                name="Нельзя подписаться дважды",
+            ),
+            CheckConstraint(
+                check=~models.Q(user=models.F("author")),
+                name="Нельзя подписаться на самого себя",
+            ),
+        )

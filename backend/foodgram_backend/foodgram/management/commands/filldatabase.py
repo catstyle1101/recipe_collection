@@ -1,0 +1,26 @@
+from argparse import RawTextHelpFormatter
+import json
+
+from django.core.management.base import BaseCommand, CommandError
+from django.conf import settings
+
+from foodgram.models import Ingredient
+
+
+class Command(BaseCommand):
+    help = """Заполняет базу данных из json файлов в папке data
+        """
+
+    def create_parser(self, *args, **kwargs):
+        parser = super(Command, self).create_parser(*args, **kwargs)
+        parser.formatter_class = RawTextHelpFormatter
+        return parser
+
+    def handle(self, *args, **kwargs):
+        Ingredient.objects.all().delete()
+        with open("../../data/ingredients.json", "r", encoding="utf8") as file:
+            ingredients_list = json.load(file)
+        for ingredient in ingredients_list:
+            ingredient_instance = Ingredient(**ingredient)
+            ingredient_instance.save(force_insert=True)
+        self.stdout.write("Данные загружены в БД")

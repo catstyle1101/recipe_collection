@@ -150,7 +150,8 @@ DJOSER = {
     'SERIALIZERS': {
         "user": "users.serializers.CustomUserSerializer",
         "current_user": "users.serializers.CustomUserSerializer",
-    }
+    },
+    'HIDE_USERS': False,
 }
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 
@@ -164,7 +165,7 @@ MAX_PASSWORD_LENGTH = 150
 MAX_TAG_NAME_LENGTH = 200
 MAX_INGREDIENT_NAME_LENGTH = 200
 MAX_INGREDIENT_UNIT_NAME_LENGTH = 200
-
+RECIPE_IMAGE_SIZE = (500, 300)
 PAGINATION_COUNT = 6
 PAGINATION_MAX_COUNT = 100
 PAGINATION_QUERY_SIZE_PARAM = 'page_size'
