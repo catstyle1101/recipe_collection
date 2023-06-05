@@ -47,3 +47,5 @@ class RecipeSerializer(serializers.ModelSerializer):
             return False
         return user.cart.filter(recipe=recipe).exists()
 
+
+
