@@ -18,6 +18,7 @@ class RecipeViewSet(viewsets.ModelViewSet, AddDelViewMixin):
     serializer_class = RecipeSerializer
     # filter_backends = (filters.DjangoFilterBackend,)
     # filterset_class = RecipeFilter
+    search_fields = ('^name',)  # вот тут копать
     pagination_class = ProjectViewPagination
     action_serializer = ShortRecipeSerializer
 
