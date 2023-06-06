@@ -1,7 +1,8 @@
 from djoser.serializers import UserSerializer
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
-from foodgram.models import Subscription
+from users.models import Subscription
 from users.models import User
 from foodgram.models import Recipe
 
@@ -10,7 +11,7 @@ class ShortRecipeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Recipe
         fields = ("id", "name", "image", "cooking_time")
-        read_only_fields = "__all__"
+        read_only_fields = ("__all__",)
 
 
 class CustomUserSerializer(UserSerializer):
@@ -50,10 +51,12 @@ class UserSubscribeSerializer(CustomUserSerializer):
             "recipes",
             "recipes_count",
         )
-        read_only_fields = "__all__"
+        read_only_fields = ("__all__",)
 
     def get_is_subscribed(self, obj):
         return True
 
     def get_recipes_count(self, obj):
         return obj.recipes.count()
+
+

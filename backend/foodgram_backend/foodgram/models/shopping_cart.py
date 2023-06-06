@@ -6,16 +6,16 @@ from . import Recipe
 
 
 class ShoppingCart(models.Model):
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name="cart",
-        verbose_name="Ваша корзина",
-    )
     recipe = models.ForeignKey(
         Recipe,
         related_name="in_cart",
         verbose_name="Рецепты в корзине",
+        on_delete=models.CASCADE,
+    )
+    user = models.ForeignKey(
+        User,
+        related_name="cart",
+        verbose_name="Ваша корзина",
         on_delete=models.CASCADE,
     )
 

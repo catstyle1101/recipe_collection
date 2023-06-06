@@ -37,13 +37,21 @@ class User(AbstractUser):
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ("username", "first_name", "last_name")
 
+    @property
+    def is_admin(self):
+        return self.role == 'admin'
+
+    @property
+    def is_user(self):
+        return self.role == 'user'
+
 
 class Subscription(models.Model):
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="followers"
-    )
     author = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="subscribers"
+    )
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="followers"
     )
 
     class Meta:
