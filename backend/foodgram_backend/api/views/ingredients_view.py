@@ -13,3 +13,4 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     filter_backends = (DjangoFilterBackend,)
     filterset_class = IngredientFilter
     permission_classes = (ReadOnly,)
+    search_fields = ('name')

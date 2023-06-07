@@ -1,5 +1,6 @@
 from django.db import models
 from django_filters import rest_framework as filters
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
@@ -16,24 +17,21 @@ from users.serializers import ShortRecipeSerializer
 class RecipeViewSet(viewsets.ModelViewSet, AddDelViewMixin):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
-    # filter_backends = (filters.DjangoFilterBackend,)
-    # filterset_class = RecipeFilter
-    search_fields = ('^name',)  # вот тут копать
     pagination_class = ProjectViewPagination
     action_serializer = ShortRecipeSerializer
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = RecipeFilter
 
     def get_queryset(self):
         query_tags = self.request.query_params.getlist("tags")
         query_is_favorited = self.request.query_params.get("is_favorited")
+        favorited_subquery = tags_subquery = models.Q()
         if query_is_favorited:
-            self.queryset = self.queryset.filter(
-                in_favorites__user=self.request.user
-            )
+            favorited_subquery = models.Q(in_favorites__user=self.request.user)
         if query_tags:
-            self.queryset = self.queryset.filter(
-                tags__slug__in=query_tags
-            ).distinct()
-        return self.queryset
+            tags_subquery = models.Q(tags__slug__in=query_tags)
+        return self.queryset.filter(favorited_subquery & tags_subquery).distinct()
+
 
     @action(
         methods=("GET", "POST", "DELETE"),
