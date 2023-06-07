@@ -2,7 +2,6 @@ from django.conf import settings
 from django.db import models
 
 
-
 class Ingredient(models.Model):
     name = models.CharField(
         "Название ингредиента",
@@ -13,11 +12,10 @@ class Ingredient(models.Model):
         max_length=settings.MAX_INGREDIENT_UNIT_NAME_LENGTH,
     )
 
-
     class Meta:
         verbose_name = "Ингредиент"
         verbose_name_plural = "Ингредиенты"
-        ordering = ("name", )
+        ordering = ("name",)
 
     def __str__(self):
         return f"{self.name}: {self.measurement_unit}"

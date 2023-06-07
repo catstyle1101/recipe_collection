@@ -106,34 +106,34 @@ class RecipeSerializer(serializers.ModelSerializer):
             raise ValidationError("Не все поля заполнены")
         if len(tags) != len(Tag.objects.filter(id__in=tags)):
             raise ValidationError("Указан неверный тег")
-        valid_ingredients = defaultdict(int)
+        valid_amounts = defaultdict(int)
         for ingredient in ingredients:
             if (
                 not str(ingredient["amount"]).isdigit()
                 or int(ingredient["amount"]) < 1
             ):
                 raise ValidationError("Введено неверное количество")
-            valid_ingredients[int(ingredient["id"])] += int(
+            valid_amounts[int(ingredient["id"])] += int(
                 ingredient["amount"]
             )
-        if not valid_ingredients:
+        if not valid_amounts:
             raise ValidationError("Не указаны ингредиенты")
         database_ingredients = Ingredient.objects.filter(
-            pk__in=valid_ingredients.keys()
+            pk__in=valid_amounts.keys()
         )
         if not database_ingredients:
             raise ValidationError("Нет ингредиентов в базе")
-        data = dict()
+        valid_ingredients = dict()
         for ingredient in database_ingredients:
-            data[ingredient.pk] = (
+            valid_ingredients[ingredient.pk] = (
                 ingredient,
-                valid_ingredients[ingredient.pk],
+                valid_amounts[ingredient.pk],
             )
 
         attrs.update(
             {
                 "tags": tags,
-                "ingredients": data,
+                "ingredients": valid_ingredients,
                 "author": self.context.get("request").user,
             }
         )

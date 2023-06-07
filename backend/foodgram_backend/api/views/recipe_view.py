@@ -22,17 +22,6 @@ class RecipeViewSet(viewsets.ModelViewSet, AddDelViewMixin):
     filter_backends = (DjangoFilterBackend,)
     filterset_class = RecipeFilter
 
-    def get_queryset(self):
-        query_tags = self.request.query_params.getlist("tags")
-        query_is_favorited = self.request.query_params.get("is_favorited")
-        favorited_subquery = tags_subquery = models.Q()
-        if query_is_favorited:
-            favorited_subquery = models.Q(in_favorites__user=self.request.user)
-        if query_tags:
-            tags_subquery = models.Q(tags__slug__in=query_tags)
-        return self.queryset.filter(favorited_subquery & tags_subquery).distinct()
-
-
     @action(
         methods=("GET", "POST", "DELETE"),
         detail=True,
@@ -51,4 +40,5 @@ class RecipeViewSet(viewsets.ModelViewSet, AddDelViewMixin):
 
     @action(methods=("GET",), detail=False)
     def download_shopping_cart(self, request):
+        # https://github.com/PyFPDF/fpdf2
         pass

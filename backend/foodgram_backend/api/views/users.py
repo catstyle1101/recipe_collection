@@ -2,7 +2,6 @@ from django.db import models
 from djoser.views import UserViewSet
 from rest_framework import status
 from rest_framework.decorators import action
-from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import DjangoModelPermissions, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
@@ -23,11 +22,11 @@ class CustomUserViewSet(UserViewSet, ModelViewSet, AddDelViewMixin):
         detail=True,
         permission_classes=(IsAuthenticated,),
     )
-    def subscribe(self, request, id):
+    def subscribe(self, _, id):
         return self.add_del(id, Subscription, models.Q(author__id=id))
 
     @action(methods=("GET",), detail=False)
-    def subscriptions(self, request):
+    def subscriptions(self, *args):
         if self.request.user.is_anonymous:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         print(self.request.user)

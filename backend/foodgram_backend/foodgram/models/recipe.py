@@ -31,7 +31,7 @@ class Recipe(models.Model):
     )
     tags = models.ManyToManyField(
         "Tag",
-        related_name='tags',
+        related_name="tags",
     )
     pub_date = models.DateTimeField(auto_now_add=True)
 
@@ -65,8 +65,8 @@ class FavoriteRecipe(models.Model):
     )
 
     class Meta:
-        verbose_name = 'Избранный рецепт'
-        verbose_name_plural = 'Избранные рецепты'
+        verbose_name = "Избранный рецепт"
+        verbose_name_plural = "Избранные рецепты"
         constraints = (
             UniqueConstraint(
                 fields=("recipe", "user"),
