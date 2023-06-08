@@ -14,4 +14,3 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     filterset_class = IngredientFilter
     filterset_fields = ('name',)
     permission_classes = (ReadOnly,)
-    # search_fields = ('name')

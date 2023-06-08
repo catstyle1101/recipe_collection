@@ -42,3 +42,5 @@ class RecipeViewSet(viewsets.ModelViewSet, AddDelViewMixin):
     def download_shopping_cart(self, request):
         # https://github.com/PyFPDF/fpdf2
         pass
+
+

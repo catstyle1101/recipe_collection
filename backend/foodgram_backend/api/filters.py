@@ -20,7 +20,7 @@ class IngredientFilter(filters.FilterSet):
         model = Ingredient
         fields = ("name",)
 
-    def name_filter(self, queryset, name, value):
+    def name_filter(self, queryset, _, value):
         return queryset.filter(
             models.Q(name__istartswith=value) | models.Q(name__icontains=value)
         )
