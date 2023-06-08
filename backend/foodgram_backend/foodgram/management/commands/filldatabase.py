@@ -18,7 +18,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         Ingredient.objects.all().delete()
-        with open("../../data/ingredients.json", "r", encoding="utf8") as file:
+        with open("./data/ingredients.json", "r", encoding="utf8") as file:
             ingredients_list = json.load(file)
         for ingredient in ingredients_list:
             ingredient_instance = Ingredient(**ingredient)
