@@ -5,6 +5,12 @@ from .validators import hex_validator
 
 
 class Tag(models.Model):
+    """
+    Tag model. Fields:
+    - name (CharField)
+    - color (CharField)
+    - slug (SlugField)
+    """
     name = models.CharField(
         "Название",
         max_length=settings.MAX_TAG_NAME_LENGTH,

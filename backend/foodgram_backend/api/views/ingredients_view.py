@@ -8,6 +8,10 @@ from foodgram.models import Ingredient
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    Viewset for paginated view of Ingredients. May be filtered
+    by query param name.
+    """
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     filter_backends = (DjangoFilterBackend,)

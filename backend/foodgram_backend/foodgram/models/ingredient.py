@@ -1,8 +1,15 @@
 from django.conf import settings
 from django.db import models
 
+from foodgram.models.validators import more_than_one_validator
+
 
 class Ingredient(models.Model):
+    """
+    Ingredient model. Fields:
+    - name (Charfield)
+    - measurement unit (Charfield)
+    """
     name = models.CharField(
         "Название ингредиента",
         max_length=settings.MAX_INGREDIENT_NAME_LENGTH,
@@ -22,6 +29,14 @@ class Ingredient(models.Model):
 
 
 class IngredientRecipe(models.Model):
+    """
+    Model for bind Ingredient with Recipe models. Add amount of ingredient
+    for a recipe.
+    Fields:
+    - recipe_id (FK Recipe)
+    - ingredient_id (FK Ingredient)
+    - amoint (IntegerField)
+    """
     recipe_id = models.ForeignKey(
         "Recipe",
         on_delete=models.CASCADE,
@@ -30,6 +45,7 @@ class IngredientRecipe(models.Model):
         Ingredient,
         on_delete=models.CASCADE,
     )
-    amount = models.IntegerField(
+    amount = models.PositiveSmallIntegerField(
         "Количество",
+        validators=(more_than_one_validator,)
     )

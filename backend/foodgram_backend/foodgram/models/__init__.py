@@ -1,8 +1,7 @@
 from foodgram.models.ingredient import Ingredient, IngredientRecipe
 from foodgram.models.recipe import Recipe
-from foodgram.models.tag import Tag
 from foodgram.models.shopping_cart import ShoppingCart
-
+from foodgram.models.tag import Tag
 
 __all__ = [
     "Recipe",

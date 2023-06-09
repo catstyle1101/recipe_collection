@@ -12,7 +12,14 @@ from .tag_serializer import TagSerializer
 
 
 class RecipeSerializer(serializers.ModelSerializer):
-    author = CustomUserSerializer(read_only=True, default=serializers.CurrentUserDefault())
+    """
+    Recipe serializer. serialized additional fields is_favorited, ingredietns
+    and is_in_shopping cart through m2m related models.
+    Implements atomic transaction logic for create and update Recipe model.
+    """
+    author = CustomUserSerializer(
+        read_only=True, default=serializers.CurrentUserDefault()
+    )
     ingredients = serializers.SerializerMethodField()
     is_favorited = serializers.SerializerMethodField()
     is_in_shopping_cart = serializers.SerializerMethodField()
@@ -39,7 +46,11 @@ class RecipeSerializer(serializers.ModelSerializer):
         )
 
     @atomic
-    def create(self, validated_data):
+    def create(self, validated_data: dict) -> Recipe:
+        """
+        Create new Recipe model. add relations to Tag and
+        IngredientRecipe models.
+        """
         tags = validated_data.pop("tags")
         ingredients = validated_data.pop("ingredients")
         recipe = Recipe.objects.create(**validated_data)
@@ -57,12 +68,16 @@ class RecipeSerializer(serializers.ModelSerializer):
         return recipe
 
     @atomic
-    def update(self, recipe, validated_data):
+    def update(self, recipe: Recipe, validated_data: dict) -> Recipe:
+        """
+        Update Recipe model. update relations to Tag and
+        IngredientRecipe models.
+        """
         tags = validated_data.pop("tags")
         ingredients = validated_data.pop("ingredients")
 
         for key, value in validated_data.items():
-            if hasattr(recipe):
+            if hasattr(recipe, key):
                 setattr(recipe, key, value)
         if tags:
             recipe.tags.clear()
@@ -82,24 +97,39 @@ class RecipeSerializer(serializers.ModelSerializer):
         recipe.save()
         return recipe
 
-    def get_ingredients(self, recipe):
+    def get_ingredients(self, recipe: Recipe) -> list:
+        """
+        Get related Ingredients to Recipe.
+        """
         return recipe.ingredients.values(
-            "id", "name", "measurement_unit", amount=models.F("ingredientrecipe__amount")
+            "id",
+            "name",
+            "measurement_unit",
+            amount=models.F("ingredientrecipe__amount"),
         )
 
-    def get_is_favorited(self, recipe):
+    def get_is_favorited(self, recipe: Recipe) -> bool:
+        """
+        Checks if Recipe in FavoriteRecipe model.
+        """
         user = self.context.get("view").request.user
         if user.is_anonymous:
             return False
         return user.favorites.filter(recipe=recipe).exists()
 
-    def get_is_in_shopping_cart(self, recipe):
+    def get_is_in_shopping_cart(self, recipe: Recipe) -> bool:
+        """
+        Checks if Recipe in ShoppingCart model.
+        """
         user = self.context.get("view").request.user
         if user.is_anonymous:
             return False
         return user.cart.filter(recipe=recipe).exists()
 
-    def validate(self, attrs):
+    def validate(self, attrs: dict) -> dict:
+        """
+        Validates data for saving.
+        """
         tags = self.initial_data.get("tags")
         ingredients = self.initial_data.get("ingredients")
         if not tags or not ingredients:
@@ -113,9 +143,7 @@ class RecipeSerializer(serializers.ModelSerializer):
                 or int(ingredient["amount"]) < 1
             ):
                 raise ValidationError("Введено неверное количество")
-            valid_amounts[int(ingredient["id"])] += int(
-                ingredient["amount"]
-            )
+            valid_amounts[int(ingredient["id"])] += int(ingredient["amount"])
         if not valid_amounts:
             raise ValidationError("Не указаны ингредиенты")
         database_ingredients = Ingredient.objects.filter(

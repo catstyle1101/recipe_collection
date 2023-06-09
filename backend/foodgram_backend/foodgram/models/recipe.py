@@ -4,11 +4,22 @@ from django.db.models import UniqueConstraint
 from PIL import Image
 
 from users.models import User
-from . import IngredientRecipe
-from .validators import cooking_time_validator
+from .ingredient import IngredientRecipe
+from .validators import more_than_one_validator
 
 
 class Recipe(models.Model):
+    """
+    Recipe model. Fields:
+    - name (Charfield)
+    - image (Imagefield)
+    - text (Textfield)
+    - cooking_time (PositiveSmallIntegerField)
+    - ingredients (ManyToManyField)
+    - author (FK)
+    - tags (ManyToManyField)
+    - pub_date (Datetimefield)
+    """
     name = models.CharField(
         "Название",
         max_length=settings.MAX_RECIPE_NAME_LENGTH,
@@ -18,7 +29,8 @@ class Recipe(models.Model):
     )
     text = models.TextField("Описание")
     cooking_time = models.PositiveSmallIntegerField(
-        "Время приготовления (в минутах)", validators=(cooking_time_validator,)
+        "Время приготовления (в минутах)", validators=(
+            more_than_one_validator,)
     )
     ingredients = models.ManyToManyField(
         "Ingredient", through=IngredientRecipe, related_name="ingredients"
@@ -51,6 +63,11 @@ class Recipe(models.Model):
 
 
 class FavoriteRecipe(models.Model):
+    """
+    M2M related model Recipe with ingredient. Fields:
+    - recipe (FK)
+    - user (FK)
+    """
     recipe = models.ForeignKey(
         Recipe,
         verbose_name="Рецепты в избранном",

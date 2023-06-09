@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import QuerySet
 from django_filters import rest_framework as filters
 from foodgram.models import Recipe, Tag, Ingredient
 
@@ -27,6 +28,9 @@ class IngredientFilter(filters.FilterSet):
 
 
 class RecipeFilter(filters.FilterSet):
+    """
+    Filter fo recipes. Uses query params in url.
+    """
     name = filters.CharFilter(method="name_filter")
     is_favorited = filters.BooleanFilter(method="in_favorites_filter")
     tags = filters.CharFilter(method="tag_filter")
@@ -35,17 +39,26 @@ class RecipeFilter(filters.FilterSet):
         model = Recipe
         fields = ("name", "author")
 
-    def tag_filter(self, queryset, _, value):
+    def tag_filter(self, queryset: QuerySet, *args) -> QuerySet:
+        """
+        Filter queryset for tag by slug.
+        """
         query_tags = self.request.query_params.getlist("tags")
         tags_subquery = models.Q()
         if query_tags:
             tags_subquery = models.Q(tags__slug__in=query_tags)
         return queryset.filter(tags_subquery).distinct()
 
-    def in_favorites_filter(self, queryset, *args):
+    def in_favorites_filter(self, queryset:  QuerySet, *args) -> QuerySet:
+        """
+        Filter queryset by related in favorites model.
+        """
         return queryset.filter(in_favorites__user=self.request.user)
 
-    def name_filter(self, queryset, _, value):
+    def name_filter(self, queryset: QuerySet, _, value: str) -> QuerySet:
+        """
+        Filter queryset by name of tag.
+        """
         return queryset.filter(
             models.Q(name__istartswith=value) | models.Q(name__icontains=value)
         )

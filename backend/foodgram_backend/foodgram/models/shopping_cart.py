@@ -6,6 +6,11 @@ from . import Recipe
 
 
 class ShoppingCart(models.Model):
+    """
+    M2M related model for user shopping cart. Fields:
+    - recipe (FK)
+    - user (FK)
+    """
     recipe = models.ForeignKey(
         Recipe,
         related_name="in_cart",

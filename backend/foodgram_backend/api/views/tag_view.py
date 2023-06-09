@@ -8,6 +8,10 @@ from foodgram.models import Tag
 
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    Viewset for paginated view of tags. may be filtered by query params:
+    name, color, slug.
+    """
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     filter_backends = (DjangoFilterBackend,)

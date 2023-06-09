@@ -1,21 +1,27 @@
 import csv
-from django.db import models
-from django.http import HttpResponse
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets
-from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
+
+from rest_framework.request import Request
+from rest_framework.response import Response
 
 from api.filters import RecipeFilter
 from api.mixins import AddDelViewMixin
 from api.pagination import ProjectViewPagination
-from foodgram.models import Recipe, ShoppingCart, IngredientRecipe
 from api.serializers import RecipeSerializer
+from django.db import models
+from django.http import HttpResponse
+from django_filters.rest_framework import DjangoFilterBackend
+from foodgram.models import IngredientRecipe, Recipe, ShoppingCart
 from foodgram.models.recipe import FavoriteRecipe
+from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
 from users.serializers import ShortRecipeSerializer
 
 
 class RecipeViewSet(viewsets.ModelViewSet, AddDelViewMixin):
+    """
+    Viewset for paginated view of recipes.
+    """
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
     pagination_class = ProjectViewPagination
@@ -28,7 +34,11 @@ class RecipeViewSet(viewsets.ModelViewSet, AddDelViewMixin):
         detail=True,
         permission_classes=(IsAuthenticated,),
     )
-    def favorite(self, _, pk):
+    def favorite(self, _, pk: int | str) -> Response:
+        """
+        Add or delete Recipe to m2m relation with User
+        through FavoriteRecipe model.
+        """
         return self.add_del(pk, FavoriteRecipe, models.Q(recipe__id=pk))
 
     @action(
@@ -36,7 +46,11 @@ class RecipeViewSet(viewsets.ModelViewSet, AddDelViewMixin):
         detail=True,
         permission_classes=(IsAuthenticated,),
     )
-    def shopping_cart(self, _, pk):
+    def shopping_cart(self, _, pk: int | str) -> Response:
+        """
+        Add or delete Recipe to m2m relation with User through
+        ShoppingCart model.
+        """
         return self.add_del(pk, ShoppingCart, models.Q(recipe__id=pk))
 
     @action(
@@ -44,7 +58,11 @@ class RecipeViewSet(viewsets.ModelViewSet, AddDelViewMixin):
         detail=False,
         permission_classes=(IsAuthenticated,),
     )
-    def download_shopping_cart(self, request):
+    def download_shopping_cart(self, request: Request) -> Response:
+        """
+        Generate csv file and send Response with list of ingredients with total
+        amount.
+        """
         cart = ShoppingCart.objects.filter(user=request.user)
         recipes = [
             recipe.get("recipe_id")

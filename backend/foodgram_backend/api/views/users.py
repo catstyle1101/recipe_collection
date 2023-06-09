@@ -13,6 +13,10 @@ from users.serializers import UserSubscribeSerializer
 
 
 class CustomUserViewSet(UserViewSet, ModelViewSet, AddDelViewMixin):
+    """
+    Viewset for paginated view of User model. implements logic for
+    subscriprtion for user by another user. And get list of all subscriptions.
+    """
     pagination_class = ProjectViewPagination
     permission_classes = (DjangoModelPermissions,)
     action_serializer = UserSubscribeSerializer
@@ -22,11 +26,17 @@ class CustomUserViewSet(UserViewSet, ModelViewSet, AddDelViewMixin):
         detail=True,
         permission_classes=(IsAuthenticated,),
     )
-    def subscribe(self, _, id):
+    def subscribe(self, _, id: int | str) -> Response:
+        """
+        Add or del relation to Subscription model.
+        """
         return self.add_del(id, Subscription, models.Q(author__id=id))
 
     @action(methods=("GET",), detail=False)
-    def subscriptions(self, *args):
+    def subscriptions(self, *args) -> Response:
+        """
+        Get list of current logged user subscriptions.
+        """
         if self.request.user.is_anonymous:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         print(self.request.user)

@@ -1,3 +1,4 @@
+from django.db.models import Model
 from djoser.serializers import UserSerializer
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
@@ -15,6 +16,9 @@ class ShortRecipeSerializer(serializers.ModelSerializer):
 
 
 class CustomUserSerializer(UserSerializer):
+    """
+    User serializer. Checks if user is subscribed to another user.
+    """
     is_subscribed = serializers.SerializerMethodField()
 
     class Meta:
@@ -28,7 +32,10 @@ class CustomUserSerializer(UserSerializer):
             "is_subscribed",
         )
 
-    def get_is_subscribed(self, obj):
+    def get_is_subscribed(self, obj: Model) -> bool:
+        """
+        Check if user is subscribed to another user.
+        """
         user_id = self.context.get("request").user.id
         return Subscription.objects.filter(
             user_id=user_id, author_id=obj.id
@@ -36,8 +43,12 @@ class CustomUserSerializer(UserSerializer):
 
 
 class UserSubscribeSerializer(CustomUserSerializer):
+    """
+    Serialiser for subscribed users page.
+    """
     recipes = ShortRecipeSerializer(many=True, read_only=True)
     recipes_count = serializers.SerializerMethodField()
+    is_subscribed = serializers.BooleanField(read_only=True, default=True)
 
     class Meta:
         model = User
@@ -47,16 +58,16 @@ class UserSubscribeSerializer(CustomUserSerializer):
             "username",
             "first_name",
             "last_name",
-            "is_subscribed",
             "recipes",
+            "is_subscribed",
             "recipes_count",
         )
         read_only_fields = ("__all__",)
 
-    def get_is_subscribed(self, obj):
-        return True
-
-    def get_recipes_count(self, obj):
+    def get_recipes_count(self, obj: Model) -> int:
+        """
+        Counts of all recipes of user.
+        """
         return obj.recipes.count()
 
 

@@ -5,6 +5,13 @@ from django.db.models import UniqueConstraint, CheckConstraint, Q
 
 
 class User(AbstractUser):
+    """
+    Usermodel. login field is email, requered fields:
+    - email
+    - first_name
+    - last_name
+    - username
+    """
     USER = "user"
     ADMIN = "admin"
     ROLE_CHOICES = (
@@ -38,15 +45,26 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ("username", "first_name", "last_name")
 
     @property
-    def is_admin(self):
+    def is_admin(self) -> bool:
+        """
+        Checks if user is admin role.
+        """
         return self.role == 'admin'
 
     @property
-    def is_user(self):
+    def is_user(self) -> bool:
+        """
+        Checks if user is user role.
+        """
         return self.role == 'user'
 
 
 class Subscription(models.Model):
+    """
+    M2M related model for user subscriptions. Fields:
+    - author (FK User)
+    - user (FK user)
+    """
     author = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="subscribers"
     )

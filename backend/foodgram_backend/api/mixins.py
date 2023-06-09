@@ -9,6 +9,10 @@ from rest_framework.response import Response
 Model = TypeVar('Model', bound=models.Model)
 
 class AddDelViewMixin:
+    """
+    Implements logic to add or delete m2m relation with model.
+    Uses action_serialiser for serialize data in response.
+    """
     action_serializer = None
 
     def add_del(
@@ -16,7 +20,10 @@ class AddDelViewMixin:
         id: int | str,
         model: Type[Model],
         query_to_join: models.Q,
-    ):
+    ) -> Response:
+        """
+        add or del relation in model using query_to_join and id key.
+        """
         obj = get_object_or_404(self.queryset, id=id)
         serialized_data = self.action_serializer(obj)
         joined_data_query = model.objects.filter(
