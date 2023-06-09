@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import QuerySet
+from django.db.models import QuerySet, Case, When, Value, IntegerField
 from django_filters import rest_framework as filters
 from foodgram.models import Recipe, Tag, Ingredient
 
@@ -22,9 +22,19 @@ class IngredientFilter(filters.FilterSet):
         fields = ("name",)
 
     def name_filter(self, queryset, _, value):
+        q1 = models.Q(name__istartswith=value)
+        q2 = models.Q(name__icontains=value)
         return queryset.filter(
-            models.Q(name__istartswith=value) | models.Q(name__icontains=value)
-        )
+            q1 | q2
+        ).annotate(
+            search_ordering=Case(
+                When(q1, then=Value(2)),
+                When(q2, then=Value(1)),
+                default=Value(0),
+                output_field=IntegerField(),
+            )
+        ).order_by('-search_ordering')
+
 
 
 class RecipeFilter(filters.FilterSet):
