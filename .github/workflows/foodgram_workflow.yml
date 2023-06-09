@@ -15,23 +15,32 @@
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
-          script: rm -rf foodgram && mkdir -p foodgram && mkdir -p foodgram/docs
+          script: rm -rf foodgram && mkdir -p foodgram && mkdir -p foodgram/docs && mkdir -p foodgram/data
           debug: true
 
       - name: Copy infra files
         uses: garygrossgarten/github-action-scp@release
         with:
-          local: infra/
+          local: infra
           remote: /${{ secrets.USER }}/foodgram/
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
-          privatekey: ${{secrets.SSH_KEY }}
+          privatekey: ${{ secrets.SSH_KEY }}
 
       - name: Copy docs files
         uses: garygrossgarten/github-action-scp@release
         with:
           local: docs
           remote: /${{ secrets.USERNAME }}/foodgram/docs/
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          privatekey: ${{secrets.SSH_KEY }}
+
+      - name: Copy data files
+        uses: garygrossgarten/github-action-scp@release
+        with:
+          local: data
+          remote: /${{ secrets.USERNAME }}/foodgram/data/
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           privatekey: ${{secrets.SSH_KEY }}
