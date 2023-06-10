@@ -15,7 +15,7 @@
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
-          script: rm -rf foodgram && mkdir -p foodgram && cd foodgram && mkdir docs
+          script: sudo rm -rf foodgram && mkdir -p foodgram && cd foodgram && mkdir docs
 
       - name: Copy infra files
         uses: appleboy/scp-action@v0.1.4
