@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db import models
 
-from foodgram.models.validators import more_than_one_validator
+from foodgram.models.validators import postitve_not_nul_max_validator
 
 
 class Ingredient(models.Model):
@@ -25,7 +25,10 @@ class Ingredient(models.Model):
         ordering = ("name",)
 
     def __str__(self):
-        return f"{self.name}: {self.measurement_unit}"
+        return (
+            f"{self.name[:settings.MAX_ADMIN_MODEL_NAME_LENGTH]}: "
+            f"{self.measurement_unit[:settings.MAX_ADMIN_MODEL_NAME_LENGTH]}"
+        )
 
 
 class IngredientRecipe(models.Model):
@@ -47,5 +50,5 @@ class IngredientRecipe(models.Model):
     )
     amount = models.PositiveSmallIntegerField(
         "Количество",
-        validators=(more_than_one_validator,)
+        validators=(postitve_not_nul_max_validator,)
     )

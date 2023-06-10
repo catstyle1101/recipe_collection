@@ -1,10 +1,9 @@
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets
-
 from api.filters import IngredientFilter
 from api.permissions import ReadOnly
 from api.serializers import IngredientSerializer
+from django_filters.rest_framework import DjangoFilterBackend
 from foodgram.models import Ingredient
+from rest_framework import viewsets
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):

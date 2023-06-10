@@ -5,7 +5,7 @@ from PIL import Image
 
 from users.models import User
 from .ingredient import IngredientRecipe
-from .validators import more_than_one_validator
+from .validators import postitve_not_nul_max_validator
 
 
 class Recipe(models.Model):
@@ -30,7 +30,7 @@ class Recipe(models.Model):
     text = models.TextField("Описание")
     cooking_time = models.PositiveSmallIntegerField(
         "Время приготовления (в минутах)", validators=(
-            more_than_one_validator,)
+            postitve_not_nul_max_validator,)
     )
     ingredients = models.ManyToManyField(
         "Ingredient", through=IngredientRecipe, related_name="ingredients"
@@ -59,7 +59,7 @@ class Recipe(models.Model):
         image.save(self.image.path)
 
     def __str__(self):
-        return self.name
+        return self.name[:settings.MAX_ADMIN_MODEL_NAME_LENGTH ]
 
 
 class FavoriteRecipe(models.Model):
@@ -90,3 +90,8 @@ class FavoriteRecipe(models.Model):
                 name="Добавить рецепт в избранное можно только один раз",
             ),
         )
+
+    def __str__(self):
+        return f"{self.user.name} -> {self.recipe.name}"
+
+

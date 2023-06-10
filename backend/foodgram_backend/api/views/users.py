@@ -1,3 +1,5 @@
+from api.mixins import AddDelViewMixin
+from api.pagination import ProjectViewPagination
 from django.db import models
 from djoser.views import UserViewSet
 from rest_framework import status
@@ -5,9 +7,6 @@ from rest_framework.decorators import action
 from rest_framework.permissions import DjangoModelPermissions, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
-
-from api.mixins import AddDelViewMixin
-from api.pagination import ProjectViewPagination
 from users.models import Subscription, User
 from users.serializers import UserSubscribeSerializer
 

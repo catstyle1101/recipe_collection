@@ -6,3 +6,4 @@ python-dotenv==1.0.0
 django-filter==23.2
 django-extra-fields==3.0.2
 psycopg2-binary==2.9.6
+django-colorfield==0.8.0

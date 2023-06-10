@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "djoser",
     "django_filters",
+    "colorfield",
     "users",
     "foodgram",
     "api",
@@ -157,6 +158,8 @@ EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
 
+MAX_ADMIN_MODEL_NAME_LENGTH = 20
+MAX_VALUE_IN_INT_FIELD = 32767
 MAX_USERNAME_LENGTH = 150
 MAX_RECIPE_NAME_LENGTH = 200
 MAX_FIRSTNAME_LENGTH = 150

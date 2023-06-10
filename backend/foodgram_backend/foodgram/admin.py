@@ -12,11 +12,11 @@ class RecipeAdmin(admin.ModelAdmin):
 
 
 class TagAdmin(admin.ModelAdmin):
-    pass
+    model = Tag
 
 
 class IngredientAdmin(admin.ModelAdmin):
-    pass
+    model = Ingredient
 
 
 admin.site.register(Recipe, RecipeAdmin)

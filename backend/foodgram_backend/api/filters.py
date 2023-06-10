@@ -1,7 +1,8 @@
 from django.db import models
-from django.db.models import QuerySet, Case, When, Value, IntegerField
+from django.db.models import Case, IntegerField, QuerySet, Value, When
 from django_filters import rest_framework as filters
-from foodgram.models import Recipe, Tag, Ingredient
+
+from foodgram.models import Ingredient, Recipe, Tag
 
 
 class TagFilter(filters.FilterSet):
@@ -44,6 +45,8 @@ class RecipeFilter(filters.FilterSet):
     name = filters.CharFilter(method="name_filter")
     is_favorited = filters.BooleanFilter(method="in_favorites_filter")
     tags = filters.CharFilter(method="tag_filter")
+    is_in_shopping_cart = filters.BooleanFilter(
+        method='is_in_shopping_cart_filter')
 
     class Meta:
         model = Recipe
@@ -72,3 +75,9 @@ class RecipeFilter(filters.FilterSet):
         return queryset.filter(
             models.Q(name__istartswith=value) | models.Q(name__icontains=value)
         )
+
+    def is_in_shopping_cart_filter(self, queryset: QuerySet, *args) -> QuerySet:
+        """
+        Add query filter is_in_shopping_cart.
+        """
+        return queryset.filter(in_cart__user=self.request.user)

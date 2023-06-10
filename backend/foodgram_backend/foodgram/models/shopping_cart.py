@@ -33,3 +33,6 @@ class ShoppingCart(models.Model):
                 name="Рецепт уже в корзине",
             ),
         )
+
+    def __str__(self):
+        return f"{self.user.name} -> {self.recipe.name}"

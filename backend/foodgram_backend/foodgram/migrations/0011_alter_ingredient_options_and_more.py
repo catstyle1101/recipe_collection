@@ -34,7 +34,7 @@ class Migration(migrations.Migration):
             name="amount",
             field=models.PositiveSmallIntegerField(
                 validators=[
-                    foodgram.models.validators.more_than_one_validator
+                    foodgram.models.validators.postitve_not_nul_max_validator
                 ],
                 verbose_name="Количество",
             ),

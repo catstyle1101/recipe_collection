@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db.models import UniqueConstraint, CheckConstraint, Q
@@ -49,14 +50,14 @@ class User(AbstractUser):
         """
         Checks if user is admin role.
         """
-        return self.role == 'admin'
+        return self.role == self.ADMIN
 
     @property
     def is_user(self) -> bool:
         """
         Checks if user is user role.
         """
-        return self.role == 'user'
+        return self.role == self.USER
 
 
 class Subscription(models.Model):
@@ -80,8 +81,13 @@ class Subscription(models.Model):
                 fields=("user", "author"),
                 name="Нельзя подписаться дважды",
             ),
-            CheckConstraint(
-                check=~models.Q(user=models.F("author")),
-                name="Нельзя подписаться на самого себя",
-            ),
         )
+
+    def clean(self):
+        if self.user == self.author:
+            raise ValidationError("Нельзя подписаться на самого себя")
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
+

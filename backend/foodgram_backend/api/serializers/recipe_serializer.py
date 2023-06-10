@@ -6,7 +6,7 @@ from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from foodgram.models import Recipe, IngredientRecipe, Tag, Ingredient
+from foodgram.models import Ingredient, IngredientRecipe, Recipe, Tag
 from users.serializers import CustomUserSerializer
 from .tag_serializer import TagSerializer
 
@@ -113,9 +113,10 @@ class RecipeSerializer(serializers.ModelSerializer):
         Checks if Recipe in FavoriteRecipe model.
         """
         user = self.context.get("view").request.user
-        if user.is_anonymous:
-            return False
-        return user.favorites.filter(recipe=recipe).exists()
+        return (
+            False if user.is_anonymous
+            else user.favorites.filter(recipe=recipe).exists()
+        )
 
     def get_is_in_shopping_cart(self, recipe: Recipe) -> bool:
         """
@@ -124,7 +125,10 @@ class RecipeSerializer(serializers.ModelSerializer):
         user = self.context.get("view").request.user
         if user.is_anonymous:
             return False
-        return user.cart.filter(recipe=recipe).exists()
+        return (
+            False if user.is_anonymous
+            else user.cart.filter(recipe=recipe).exists()
+        )
 
     def validate(self, attrs: dict) -> dict:
         """
@@ -134,7 +138,11 @@ class RecipeSerializer(serializers.ModelSerializer):
         ingredients = self.initial_data.get("ingredients")
         if not tags or not ingredients:
             raise ValidationError("Не все поля заполнены")
-        if len(tags) != len(Tag.objects.filter(id__in=tags)):
+        tag_count = len(Tag.objects.filter(id__in=tags))
+        if (
+            len(tags) != tag_count
+            or len(set(tags)) != tag_count
+        ):
             raise ValidationError("Указан неверный тег")
         valid_amounts = defaultdict(int)
         for ingredient in ingredients:
