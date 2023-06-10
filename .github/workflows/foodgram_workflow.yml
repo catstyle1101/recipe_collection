@@ -15,8 +15,7 @@
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
-          script: rm -rf foodgram && mkdir -p foodgram && mkdir -p foodgram/docs && mkdir -p foodgram/data
-          debug: true
+          script: rm -rf foodgram && mkdir -p foodgram && cd foodgram && mkdir docs && mkdir data
 
       - name: Copy infra files
         uses: appleboy/scp-action@v0.1.4
@@ -35,7 +34,7 @@
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
           source: "docs/*"
-          target: /home/${{ secrets.USER }}/foodgram/
+          target: /home/${{ secrets.USER }}/foodgram/docs/
 
     build_and_push_frontend_to_DockerHub:
       name: Building front image and pushing it to DockerHub
