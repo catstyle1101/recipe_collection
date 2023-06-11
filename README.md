@@ -38,17 +38,17 @@ mkdir foodgram && cd foodgram/
 ```
 touch .env
 
-SECRET_KEY=<Your_some_long_string>
+SECRET_KEY=<secret_key>
 DB_ENGINE=django.db.backends.postgresql
 DB_NAME=postgres
 POSTGRES_USER=postgres
-POSTGRES_PASSWORD=<Your_password>
+POSTGRES_PASSWORD=<postgre_password>
 DB_HOST=db
 DB_PORT=5432
 ```
 - Скопировать папку infra на сервер
 ```
-scp -r infra/* <server user>@<server IP>:/home/<server user>/foodgram/
+scp -r infra/* <user>@<server_ip>:/home/<user>/foodgram/
 ```
 - Запустить docker-compose
 ```
