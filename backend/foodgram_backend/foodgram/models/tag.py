@@ -2,8 +2,6 @@ from django.conf import settings
 from django.db import models
 from colorfield.fields import ColorField
 
-from .validators import hex_validator
-
 
 class Tag(models.Model):
     """
@@ -31,4 +29,4 @@ class Tag(models.Model):
         verbose_name_plural = "Теги"
 
     def __str__(self):
-        return self.name[settings.MAX_ADMIN_MODEL_NAME_LENGTH]
+        return self.name[:settings.MAX_ADMIN_MODEL_NAME_LENGTH]
