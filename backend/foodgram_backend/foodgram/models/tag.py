@@ -11,7 +11,7 @@ class Tag(models.Model):
     - slug (SlugField)
     """
     name = models.CharField(
-        "Название",
+        "Имя тега",
         max_length=settings.MAX_TAG_NAME_LENGTH,
         unique=True,
     )

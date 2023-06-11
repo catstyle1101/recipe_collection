@@ -12,6 +12,7 @@ class RecipeAdmin(admin.ModelAdmin):
     inlines = (IngredientInline,)
     search_fields = ("name", "author__username", "tags__name")
     list_display = ("name", "author", "count_in_favorites")
+    list_filter = ("tags__name",)
     raw_id_fields = ("author",)
 
     def count_in_favorites(self, obj: Recipe) -> int:
@@ -22,6 +23,7 @@ class RecipeAdmin(admin.ModelAdmin):
 
 class TagAdmin(admin.ModelAdmin):
     model = Tag
+    list_filter = ("name",)
 
 
 class IngredientAdmin(admin.ModelAdmin):
