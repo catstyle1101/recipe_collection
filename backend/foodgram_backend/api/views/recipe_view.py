@@ -26,7 +26,7 @@ class RecipeViewSet(viewsets.ModelViewSet, AddDelViewMixin):
     pagination_class = ProjectViewPagination
     filter_backends = (DjangoFilterBackend,)
     filterset_class = RecipeFilter
-    permission_classes = (IsAuthorOrReadOnly | IsAdmin,)
+    permission_classes = (IsAdmin | IsAuthorOrReadOnly,)
 
     @action(
         methods=("GET", "POST", "DELETE"),
