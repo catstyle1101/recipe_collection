@@ -8,6 +8,7 @@ from rest_framework.response import Response
 
 Model = TypeVar('Model', bound=models.Model)
 
+
 class AddDelViewMixin:
     """
     Implements logic to add or delete m2m relation with model.

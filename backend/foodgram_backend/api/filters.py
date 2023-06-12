@@ -37,7 +37,6 @@ class IngredientFilter(filters.FilterSet):
         ).order_by('-search_ordering')
 
 
-
 class RecipeFilter(filters.FilterSet):
     """
     Filter fo recipes. Uses query params in url.
@@ -76,7 +75,9 @@ class RecipeFilter(filters.FilterSet):
             models.Q(name__istartswith=value) | models.Q(name__icontains=value)
         )
 
-    def is_in_shopping_cart_filter(self, queryset: QuerySet, *args) -> QuerySet:
+    def is_in_shopping_cart_filter(
+            self, queryset: QuerySet, *args
+    ) -> QuerySet:
         """
         Add query filter is_in_shopping_cart.
         """

@@ -1,7 +1,6 @@
 from django.db.models import Model
 from djoser.serializers import UserSerializer
 from rest_framework import serializers
-from rest_framework.exceptions import ValidationError
 
 from users.models import Subscription
 from users.models import User
@@ -78,5 +77,3 @@ class UserSubscribeSerializer(CustomUserSerializer):
         Counts of all recipes of user.
         """
         return obj.recipes.count()
-
-

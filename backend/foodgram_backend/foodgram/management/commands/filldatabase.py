@@ -36,4 +36,3 @@ class Command(BaseCommand):
                 tag_instance = Tag(**tag)
                 tag_instance.save(force_insert=True)
             self.stdout.write("Теги загружены в БД")
-

@@ -59,7 +59,7 @@ class Recipe(models.Model):
         image.save(self.image.path)
 
     def __str__(self):
-        return self.name[:settings.MAX_ADMIN_MODEL_NAME_LENGTH ]
+        return self.name[:settings.MAX_ADMIN_MODEL_NAME_LENGTH]
 
 
 class FavoriteRecipe(models.Model):
@@ -93,5 +93,3 @@ class FavoriteRecipe(models.Model):
 
     def __str__(self):
         return f"{self.user.name} -> {self.recipe.name}"
-
-
