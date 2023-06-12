@@ -83,6 +83,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         if tags:
             recipe.tags.clear()
             recipe.tags.set(tags)
+        if ingredients:
             recipe.ingredients.clear()
             IngredientRecipe.objects.bulk_create(
                 [
