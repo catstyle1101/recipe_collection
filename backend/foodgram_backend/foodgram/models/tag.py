@@ -33,7 +33,7 @@ class Tag(models.Model):
         self.color = self.color.upper()
         self.slug = self.slug.lower()
         self.name = self.name.Capitalize()
-        return super().save(*args, **kwargs)
+        return super(Tag, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name[:settings.MAX_ADMIN_MODEL_NAME_LENGTH]
