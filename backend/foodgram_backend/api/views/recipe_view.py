@@ -11,10 +11,10 @@ from foodgram.models import IngredientRecipe, Recipe, ShoppingCart
 from foodgram.models.recipe import FavoriteRecipe
 from rest_framework import viewsets
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import (
+    IsAuthenticated, IsAdmin, IsAuthorOrReadOnly)
 from rest_framework.request import Request
 from rest_framework.response import Response
-from users.serializers import ShortRecipeSerializer
 
 
 class RecipeViewSet(viewsets.ModelViewSet, AddDelViewMixin):
@@ -26,6 +26,7 @@ class RecipeViewSet(viewsets.ModelViewSet, AddDelViewMixin):
     pagination_class = ProjectViewPagination
     filter_backends = (DjangoFilterBackend,)
     filterset_class = RecipeFilter
+    permission_classes = (IsAuthorOrReadOnly | IsAdmin,)
 
     @action(
         methods=("GET", "POST", "DELETE"),
