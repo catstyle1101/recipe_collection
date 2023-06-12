@@ -149,7 +149,7 @@ class RecipeSerializer(serializers.ModelSerializer):
             if (
                 not str(ingredient["amount"]).isdigit()
                 or int(ingredient["amount"]) < 1
-                or int(ingredient["amount"]) > settings.MAX_VALUE_IN_INT_FIELD
+                or int(ingredient["amount"]) > settings.MAX_INGREDIENT_VALUE
             ):
                 raise ValidationError("Введено неверное количество")
             valid_amounts[int(ingredient["id"])] += int(ingredient["amount"])
@@ -162,6 +162,8 @@ class RecipeSerializer(serializers.ModelSerializer):
             raise ValidationError("Нет ингредиентов в базе")
         valid_ingredients = dict()
         for ingredient in database_ingredients:
+            if valid_amounts[ingredient.pk] > settings.MAX_VALUE_IN_INT_FIELD:
+                raise ValidationError("Ингредиентов слишком много")
             valid_ingredients[ingredient.pk] = (
                 ingredient,
                 valid_amounts[ingredient.pk],
