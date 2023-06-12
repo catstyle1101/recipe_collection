@@ -90,3 +90,6 @@ class FavoriteRecipe(models.Model):
                 name="Добавить рецепт в избранное можно только один раз",
             ),
         )
+
+    def __str__(self):
+        return f"{self.user.username} -> {self.recipe.name}"
