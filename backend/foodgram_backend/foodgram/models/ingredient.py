@@ -50,5 +50,5 @@ class IngredientRecipe(models.Model):
     )
     amount = models.PositiveSmallIntegerField(
         "Количество",
-        validators=(postitve_not_nul_max_validator,)
+        # validators=(postitve_not_nul_max_validator,)
     )
