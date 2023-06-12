@@ -50,7 +50,7 @@ class User(AbstractUser):
         """
         Checks if user is admin role.
         """
-        return self.role == self.ADMIN
+        return self.role == self.ADMIN or self.is_superuser or self.is_staff
 
     @property
     def is_user(self) -> bool:

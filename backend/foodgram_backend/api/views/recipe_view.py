@@ -11,10 +11,11 @@ from foodgram.models import IngredientRecipe, Recipe, ShoppingCart
 from foodgram.models.recipe import FavoriteRecipe
 from rest_framework import viewsets
 from rest_framework.decorators import action
-from rest_framework.permissions import (
-    IsAuthenticated, IsAdmin, IsAuthorOrReadOnly)
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
+
+from api.permissions import IsAdmin, IsAuthorOrReadOnly
 
 
 class RecipeViewSet(viewsets.ModelViewSet, AddDelViewMixin):
