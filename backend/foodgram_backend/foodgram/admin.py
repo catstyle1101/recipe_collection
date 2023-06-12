@@ -40,7 +40,6 @@ class CardAdmin(admin.ModelAdmin):
     model = ShoppingCart
     list_display = ("user", "recipe")
 
-
 admin.site.register(Recipe, RecipeAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Ingredient, IngredientAdmin)
