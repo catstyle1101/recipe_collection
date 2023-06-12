@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db.models import Model
 from djoser.serializers import UserSerializer
 from rest_framework import serializers
@@ -12,6 +13,7 @@ class ShortRecipeSerializer(serializers.ModelSerializer):
         model = Recipe
         fields = ("id", "name", "image", "cooking_time")
         read_only_fields = ("id", "name", "image", "cooking_time")
+
 
 
 class CustomUserSerializer(UserSerializer):
@@ -45,7 +47,8 @@ class UserSubscribeSerializer(CustomUserSerializer):
     """
     Serialiser for subscribed users page.
     """
-    recipes = ShortRecipeSerializer(many=True, read_only=True)
+    # recipes = ShortRecipeSerializer(many=True, read_only=True)
+    recipes = serializers.SerializerMethodField()
     recipes_count = serializers.SerializerMethodField()
     is_subscribed = serializers.BooleanField(read_only=True, default=True)
 
@@ -77,3 +80,11 @@ class UserSubscribeSerializer(CustomUserSerializer):
         Counts of all recipes of user.
         """
         return obj.recipes.count()
+
+    def get_recipes(self, obj: Model) -> Recipe:
+        """
+        Get 3 recipes.
+        """
+        recipes = obj.recipes.all()[:settings.MAX_RECIPES_IN_SUB_PAGE]
+        serializer = ShortRecipeSerializer(recipes, many=True, read_only=True)
+        return serializer.data

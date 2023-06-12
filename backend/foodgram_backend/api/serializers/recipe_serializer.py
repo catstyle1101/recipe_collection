@@ -1,5 +1,6 @@
 from collections import defaultdict
 
+from django.conf import settings
 from django.db import models
 from django.db.transaction import atomic
 from drf_extra_fields.fields import Base64ImageField
@@ -83,6 +84,11 @@ class RecipeSerializer(serializers.ModelSerializer):
             recipe.tags.clear()
             recipe.tags.set(tags)
         if ingredients:
+            if any(0 < amount <= settings.MAX_VALUE_IN_INT_FIELD
+                   for _, amount in ingredients.values()):
+                raise ValidationError(
+                    "Количество ингредиента должно быть "
+                    f"от 1 до {settings.MAX_VALUE_IN_INT_FIELD }")
             recipe.ingredients.clear()
             IngredientRecipe.objects.bulk_create(
                 [

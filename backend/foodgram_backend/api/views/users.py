@@ -1,5 +1,3 @@
-from api.mixins import AddDelViewMixin
-from api.pagination import ProjectViewPagination
 from django.db import models
 from djoser.views import UserViewSet
 from rest_framework import status
@@ -7,6 +5,9 @@ from rest_framework.decorators import action
 from rest_framework.permissions import DjangoModelPermissions, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
+
+from api.mixins import AddDelViewMixin
+from api.pagination import ProjectViewPagination
 from users.models import Subscription, User
 from users.serializers import UserSubscribeSerializer
 
@@ -38,7 +39,6 @@ class CustomUserViewSet(UserViewSet, ModelViewSet, AddDelViewMixin):
         """
         if self.request.user.is_anonymous:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
-        print(self.request.user)
 
         authors = self.paginate_queryset(
             User.objects.filter(subscribers__user=self.request.user)

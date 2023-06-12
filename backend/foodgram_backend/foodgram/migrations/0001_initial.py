@@ -81,7 +81,7 @@ class Migration(migrations.Migration):
                     models.CharField(
                         help_text="Цвет в HEX",
                         max_length=7,
-                        validators=[foodgram.models.validators.hex_validator],
+                        validators=[],
                         verbose_name="Цвет",
                     ),
                 ),

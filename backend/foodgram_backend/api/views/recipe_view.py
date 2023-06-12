@@ -24,7 +24,6 @@ class RecipeViewSet(viewsets.ModelViewSet, AddDelViewMixin):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
     pagination_class = ProjectViewPagination
-    action_serializer = ShortRecipeSerializer
     filter_backends = (DjangoFilterBackend,)
     filterset_class = RecipeFilter
 
