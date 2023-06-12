@@ -24,6 +24,12 @@ class Tag(models.Model):
         unique=True,
     )
 
+    def clean(self):
+        self.name = self.name.lower()
+        self.color = self.color.upper()
+        self.slug = self.slug.lower()
+        return super().clean()
+
     class Meta:
         verbose_name = "Тег"
         verbose_name_plural = "Теги"
