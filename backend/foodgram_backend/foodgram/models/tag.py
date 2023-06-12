@@ -28,7 +28,6 @@ class Tag(models.Model):
         verbose_name = "Тег"
         verbose_name_plural = "Теги"
 
-
     def save(self, *args, **kwargs):
         self.color = self.color.upper()
         self.slug = self.slug.lower()
