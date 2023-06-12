@@ -152,7 +152,9 @@ class RecipeSerializer(serializers.ModelSerializer):
                 or int(ingredient["amount"]) < 1
                 or int(ingredient["amount"]) > settings.MAX_INGREDIENT_VALUE
             ):
-                raise ValidationError("Введено неверное количество")
+                raise ValidationError(
+                    "Количество ингредиента ограничено "
+                    f"суммой: {settings.MAX_INGREDIENT_VALUE}")
             valid_amounts[int(ingredient["id"])] += int(ingredient["amount"])
         if not valid_amounts:
             raise ValidationError("Не указаны ингредиенты")
