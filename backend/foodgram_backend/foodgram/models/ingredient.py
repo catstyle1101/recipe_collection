@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db import models
 
-from foodgram.models.validators import postitve_not_nul_max_validator
+from foodgram.models.validators import ingredient_validator
 
 
 class Ingredient(models.Model):
@@ -50,5 +50,5 @@ class IngredientRecipe(models.Model):
     )
     amount = models.PositiveSmallIntegerField(
         "Количество",
-        # validators=(postitve_not_nul_max_validator,)
+        validators=(ingredient_validator,)
     )
