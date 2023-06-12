@@ -24,15 +24,16 @@ class Tag(models.Model):
         unique=True,
     )
 
-    def clean(self):
-        self.name = self.name.lower()
-        self.color = self.color.upper()
-        self.slug = self.slug.lower()
-        return super().clean()
-
     class Meta:
         verbose_name = "Тег"
         verbose_name_plural = "Теги"
+
+
+    def save(self, *args, **kwargs):
+        self.color = self.color.upper()
+        self.slug = self.slug.lower()
+        self.name = self.name.Capitalize()
+        return super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name[:settings.MAX_ADMIN_MODEL_NAME_LENGTH]
