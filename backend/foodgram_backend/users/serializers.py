@@ -47,7 +47,6 @@ class UserSubscribeSerializer(CustomUserSerializer):
     """
     Serialiser for subscribed users page.
     """
-    # recipes = ShortRecipeSerializer(many=True, read_only=True)
     recipes = serializers.SerializerMethodField()
     recipes_count = serializers.SerializerMethodField()
     is_subscribed = serializers.BooleanField(read_only=True, default=True)

@@ -1,8 +1,8 @@
 from django.conf import settings
-from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db.models import UniqueConstraint
+from rest_framework.exceptions import ValidationError
 
 
 class User(AbstractUser):
