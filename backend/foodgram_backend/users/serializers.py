@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db.models import Model
 from djoser.serializers import UserSerializer
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 from users.models import Subscription
 from users.models import User
@@ -87,3 +88,11 @@ class UserSubscribeSerializer(CustomUserSerializer):
         recipes = obj.recipes.all()[:settings.MAX_RECIPES_IN_SUB_PAGE]
         serializer = ShortRecipeSerializer(recipes, many=True, read_only=True)
         return serializer.data
+
+    def validate(self, attrs):
+        if attrs.get("user") == attrs.get("author"):
+            raise ValidationError("Нельзя подписаться на самого себя")
+        if Subscription.objects.get(
+                user=attrs.get("user"), author=attrs.get("author")).exists():
+            raise ValidationError("Нельзя подписаться дважды")
+        return attrs

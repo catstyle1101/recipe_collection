@@ -90,10 +90,5 @@ class Subscription(models.Model):
             ),
         )
 
-    def clean(self):
-        if self.user == self.author:
-            raise ValidationError("Нельзя подписаться на самого себя")
-
-    def save(self, *args, **kwargs):
-        self.full_clean()
-        super().save(*args, **kwargs)
+    def __str__(self):
+        return f"{self.user.username} -> {self.author.username}"
