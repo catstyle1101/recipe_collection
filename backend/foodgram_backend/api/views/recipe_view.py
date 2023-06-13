@@ -16,6 +16,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from api.permissions import IsAdmin, IsAuthorOrReadOnly
+from users.serializers import ShortRecipeSerializer
 
 
 class RecipeViewSet(viewsets.ModelViewSet, AddDelViewMixin):
@@ -25,6 +26,7 @@ class RecipeViewSet(viewsets.ModelViewSet, AddDelViewMixin):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
     pagination_class = ProjectViewPagination
+    action_serializer = ShortRecipeSerializer
     filter_backends = (DjangoFilterBackend,)
     filterset_class = RecipeFilter
     permission_classes = (IsAdmin | IsAuthorOrReadOnly,)
