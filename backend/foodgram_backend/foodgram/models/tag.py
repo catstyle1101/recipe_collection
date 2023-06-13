@@ -27,11 +27,10 @@ class Tag(models.Model):
     class Meta:
         verbose_name = "Тег"
         verbose_name_plural = "Теги"
-
     def save(self, *args, **kwargs):
         self.color = self.color.upper()
         self.slug = self.slug.lower()
-        self.name = self.name.Capitalize()
+        self.name = self.name.capitalize()
         return super(Tag, self).save(*args, **kwargs)
 
     def __str__(self):
