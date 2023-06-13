@@ -8,7 +8,6 @@ class TagSerializer(serializers.ModelSerializer):
     """
     Tag serializer.
     """
-    color = serializers.SerializerMethodField()
     class Meta:
         model = Tag
         fields = ("id", "name", "color", "slug")
