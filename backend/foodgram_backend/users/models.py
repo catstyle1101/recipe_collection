@@ -93,7 +93,7 @@ class Subscription(models.Model):
     def clean(self):
         if self.user == self.author:
             raise ValidationError("Нельзя подписаться на самого себя")
-        if Subscription.objects.get(
+        if Subscription.objects.filter(
                 user=self.user, author=self.author).exists():
             raise ValidationError("Нельзя подписаться дважды")
 
