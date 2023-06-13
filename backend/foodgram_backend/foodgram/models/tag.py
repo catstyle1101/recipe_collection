@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models
 from colorfield.fields import ColorField
 
@@ -27,6 +28,15 @@ class Tag(models.Model):
     class Meta:
         verbose_name = "Тег"
         verbose_name_plural = "Теги"
+
+    def clean(self):
+        if Tag.objects.filter(color=self.color.upper()).exists():
+            raise ValidationError("Цвет должен быть уникальным")
+        if Tag.objects.filter(name=self.name.capitalize()).exists():
+            raise ValidationError("Имя тега должно быть уникальным")
+        if Tag.objects.filter(slug=self.slug.lower()).exists():
+            raise ValidationError("Slug должен быть уникальным")
+
     def save(self, *args, **kwargs):
         self.color = self.color.upper()
         self.slug = self.slug.lower()
