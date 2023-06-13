@@ -31,11 +31,12 @@ class Tag(models.Model):
 
     def clean(self):
         if Tag.objects.filter(color=self.color.upper()).exists():
-            raise ValidationError("Цвет должен быть уникальным")
+            raise ValidationError({"color": ["Цвет должен быть уникальным",]})
         if Tag.objects.filter(name=self.name.capitalize()).exists():
-            raise ValidationError("Имя тега должно быть уникальным")
+            raise ValidationError(
+                {"name": ["Имя тега должно быть уникальным",]})
         if Tag.objects.filter(slug=self.slug.lower()).exists():
-            raise ValidationError("Slug должен быть уникальным")
+            raise ValidationError({"slug": ["Slug должен быть уникальным",]})
 
     def save(self, *args, **kwargs):
         self.color = self.color.upper()

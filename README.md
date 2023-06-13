@@ -54,3 +54,16 @@ scp -r infra/* <user>@<server_ip>:/home/<user>/foodgram/
 ```
 sudo docker-compose up -d
 ```
+
+## Создание суперпользователя
+
+```
+sudo docker exec -it foodgram_backend_1 bash
+
+python manage.py createsuperuser
+```
+
+
+## Документация по проекту
+
+Доступна по адресу http://<your_address>/api/redoc
