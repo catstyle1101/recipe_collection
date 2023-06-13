@@ -54,8 +54,14 @@ class RecipeSerializer(serializers.ModelSerializer):
         """
         tags = validated_data.pop("tags")
         ingredients = validated_data.pop("ingredients")
-        if Recipe.objects.filter(**validated_data).exists():
+
+        name = validated_data.get("name")
+        text = validated_data.get("text")
+        cooking_time = validated_data.get("cooking_time")
+        if Recipe.objects.filter(
+                name=name, text=text, cooking_time=cooking_time).exists():
             raise ValidationError("Нельзя создавать дубли рецептов")
+
         recipe = Recipe.objects.create(**validated_data)
         recipe.tags.set(tags)
         IngredientRecipe.objects.bulk_create(
