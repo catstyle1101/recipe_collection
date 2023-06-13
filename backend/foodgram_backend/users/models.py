@@ -1,8 +1,8 @@
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db.models import UniqueConstraint
-from rest_framework.exceptions import ValidationError
 
 
 class User(AbstractUser):
@@ -89,6 +89,17 @@ class Subscription(models.Model):
                 name="Нельзя подписаться дважды",
             ),
         )
+
+    def clean(self):
+        if self.user == self.author:
+            raise ValidationError("Нельзя подписаться на самого себя")
+        if Subscription.objects.get(
+                user=self.user, author=self.author).exists():
+            raise ValidationError("Нельзя подписаться дважды")
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.user.username} -> {self.author.username}"
