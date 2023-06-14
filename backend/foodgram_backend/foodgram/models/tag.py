@@ -1,14 +1,14 @@
-from colorfield.fields import ColorField
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
+from colorfield.fields import ColorField
 
 
 class Tag(models.Model):
     """
     Tag model. Fields:
     - name (CharField)
-    - color (ColorField)
+    - color (ColorFieldFalse)
     - slug (SlugField)
     """
 
@@ -33,7 +33,7 @@ class Tag(models.Model):
     def clean(self):
         if (
             Tag.objects.filter(color=self.color.upper())
-            .exclude(pk=self.instance.id)
+            .exclude(pk=self.pk)
             .exists()
         ):
             raise ValidationError(
@@ -45,7 +45,7 @@ class Tag(models.Model):
             )
         if (
             Tag.objects.filter(name=self.name.capitalize())
-            .exclude(pk=self.instance.id)
+            .exclude(pk=self.pk)
             .exists()
         ):
             raise ValidationError(
@@ -57,7 +57,7 @@ class Tag(models.Model):
             )
         if (
             Tag.objects.filter(slug=self.slug.lower())
-            .exclude(pk=self.instance.id)
+            .exclude(pk=self.pk)
             .exists()
         ):
             raise ValidationError(
