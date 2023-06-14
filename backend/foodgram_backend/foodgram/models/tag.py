@@ -1,7 +1,7 @@
+from colorfield.fields import ColorField
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
-from colorfield.fields import ColorField
 
 
 class Tag(models.Model):
