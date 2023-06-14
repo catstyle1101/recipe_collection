@@ -1,13 +1,17 @@
 ![example workflow](https://github.com/catstyle1101/recipe_collection/actions/workflows/foodgram_workflow.yml/badge.svg)
 # Recipe collection - сборник рецептов приготовления блюд.
 
+
 ## Возможности
-- Размещать рецепты на сайте 
+- Размещать рецепты на сайте
+![image](https://github.com/catstyle1101/recipe_collection/assets/37059480/d90144f6-7776-461b-a70b-f8dd55ae8fbf)
 - У рецептов есть теги (завтрак, обед, ужин)
 - У рецептов есть ингредиенты.
 - К рецептам необходимо прикреплять фотографии
 - Есть возможность подписываться на авторов и добавлять рецепты в избранное
+![image](https://github.com/catstyle1101/recipe_collection/assets/37059480/e4bacef3-ee8f-4043-bdc2-316b19f6e1d1)
 - Есть возможность добавлять рецепты в корзину и скачивать ингредиенты, как список покупок
+![image](https://github.com/catstyle1101/recipe_collection/assets/37059480/de249d51-6ffd-4ac6-be33-f494ee0e797a)
 
 ## Пользовательские роли и права доступа
 - Гость (неавторизованный пользователь)
