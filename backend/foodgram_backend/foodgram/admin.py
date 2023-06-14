@@ -1,6 +1,13 @@
 from django.contrib import admin
+
 from foodgram.models import (
-    FavoriteRecipe, Ingredient, Recipe, Tag, ShoppingCart)
+    FavoriteRecipe,
+    Ingredient,
+    Recipe,
+    ShoppingCart,
+    Tag,
+)
+from users.models import Subscription, User
 
 
 class IngredientInline(admin.TabularInline):
@@ -40,8 +47,21 @@ class CardAdmin(admin.ModelAdmin):
     model = ShoppingCart
     list_display = ("user", "recipe")
 
+
+class UserAdmin(admin.ModelAdmin):
+    model = User
+    search_fields = ("name", "email")
+
+
+class SubscriptionAdmin(admin.ModelAdmin):
+    model = Subscription
+    search_fields = ("user__username", "user__email")
+
+
 admin.site.register(Recipe, RecipeAdmin)
+admin.site.register(FavoriteRecipe, FavoritesAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Ingredient, IngredientAdmin)
-admin.site.register(FavoriteRecipe, FavoritesAdmin)
 admin.site.register(ShoppingCart, CardAdmin)
+admin.site.register(User, UserAdmin)
+admin.site.register(Subscription, SubscriptionAdmin)

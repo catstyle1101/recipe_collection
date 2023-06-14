@@ -1,9 +1,10 @@
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import viewsets
+
 from api.filters import TagFilter
 from api.permissions import ReadOnly
 from api.serializers import TagSerializer
-from django_filters.rest_framework import DjangoFilterBackend
 from foodgram.models import Tag
-from rest_framework import viewsets
 
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):

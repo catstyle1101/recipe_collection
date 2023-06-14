@@ -8,8 +8,8 @@ from rest_framework.viewsets import ModelViewSet
 
 from api.mixins import AddDelViewMixin
 from api.pagination import ProjectViewPagination
+from api.serializers import UserSubscribeSerializer
 from users.models import Subscription, User
-from users.serializers import UserSubscribeSerializer
 
 
 class CustomUserViewSet(UserViewSet, ModelViewSet, AddDelViewMixin):

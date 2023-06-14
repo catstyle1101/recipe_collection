@@ -3,9 +3,31 @@
   on: [push]
 
   jobs:
+    tests:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v2
+        - name: Set up Python
+          uses: actions/setup-python@v2
+          with:
+            python-version: 3.11
+
+        - name: Install dependencies
+          run: |
+            cd backend
+            python -m pip install --upgrade pip 
+            pip install flake8 pep8-naming flake8-broken-line flake8-return flake8-isort pytest
+            pip install -r requirements.txt 
+
+        - name: tests
+          run: |
+            cd ./backend/foodgram_backend
+            python -m flake8
+            python manage.py test
     copy_project_on_server:
       name: Copy docs and infra folders
       runs-on: ubuntu-latest
+      needs: tests
       steps:
       - uses: actions/checkout@v2
 
@@ -35,7 +57,6 @@
           key: ${{ secrets.SSH_KEY }}
           source: "docs/*"
           target: /home/${{ secrets.USER }}/foodgram/
-
     build_and_push_frontend_to_DockerHub:
       name: Building front image and pushing it to DockerHub
       runs-on: ubuntu-latest

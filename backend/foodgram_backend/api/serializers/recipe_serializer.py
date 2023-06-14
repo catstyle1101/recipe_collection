@@ -8,8 +8,9 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 from foodgram.models import Ingredient, IngredientRecipe, Recipe, Tag
-from users.serializers import CustomUserSerializer
+
 from .tag_serializer import TagSerializer
+from .user_serializer import CustomUserSerializer
 
 
 class RecipeSerializer(serializers.ModelSerializer):

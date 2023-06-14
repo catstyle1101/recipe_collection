@@ -1,7 +1,5 @@
-import re
-
-from django.core.exceptions import ValidationError
 from django.conf import settings
+from django.core.exceptions import ValidationError
 
 
 def postitve_not_nul_max_validator(number: int) -> None:
@@ -14,6 +12,7 @@ def postitve_not_nul_max_validator(number: int) -> None:
             f"Время готовки должно быть в диапазоне "
             f"от 1 до {settings.MAX_VALUE_IN_INT_FIELD }"
         )
+
 
 def ingredient_validator(number: int) -> None:
     """

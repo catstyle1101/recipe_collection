@@ -1,5 +1,5 @@
-# Foodgram - сборник рецептов.
-проект доступен по адресу: http://catstyle.ddns.net
+![example workflow](https://github.com/catstyle1101/recipe_collection/actions/workflows/foodgram_workflow.yml/badge.svg)
+# Recipe collection - сборник рецептов приготовления блюд.
 
 ## Возможности
 - Размещать рецепты на сайте 
@@ -24,7 +24,7 @@
 
 ## Запуск
 - Склонировать репозиторий
-```git clone git@github.com:catstyle1101/foodgram-project-react.git```
+```git clone git@github.com:catstyle1101/recipe_collection.git```
 - Подключиться к серверу
 ```ssh <user>@<server_ip>```
 - Установить Docker и docker-compose на сервер

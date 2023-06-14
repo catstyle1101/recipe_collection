@@ -38,7 +38,7 @@ class IngredientRecipe(models.Model):
     Fields:
     - recipe_id (FK Recipe)
     - ingredient_id (FK Ingredient)
-    - amoint (IntegerField)
+    - amount (IntegerField)
     """
     recipe_id = models.ForeignKey(
         "Recipe",

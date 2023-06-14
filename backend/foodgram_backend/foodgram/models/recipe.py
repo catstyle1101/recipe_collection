@@ -1,9 +1,10 @@
-from django.db import models
 from django.conf import settings
+from django.db import models
 from django.db.models import UniqueConstraint
 from PIL import Image
 
 from users.models import User
+
 from .ingredient import IngredientRecipe
 from .validators import postitve_not_nul_max_validator
 
