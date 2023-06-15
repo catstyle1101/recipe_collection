@@ -1,6 +1,8 @@
 ![example workflow](https://github.com/catstyle1101/recipe_collection/actions/workflows/foodgram_workflow.yml/badge.svg)
 # Recipe collection - сборник рецептов приготовления блюд.
 
+доступен по адресу: ![catstyle.ddns.net](http://catstyle.ddns.net)
+
 
 ## Возможности
 - Размещать рецепты на сайте
