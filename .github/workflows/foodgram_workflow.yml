@@ -46,7 +46,7 @@
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
           source: "infra/*"
-          target: ${{ secrets.USER }}/foodgram
+          target: /${{ secrets.USER }}/foodgram
           strip_components: 1
 
       - name: Copy docs files
@@ -56,7 +56,7 @@
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
           source: "docs/*"
-          target: ${{ secrets.USER }}/foodgram
+          target: /${{ secrets.USER }}/foodgram
     build_and_push_frontend_to_DockerHub:
       name: Building front image and pushing it to DockerHub
       runs-on: ubuntu-latest
